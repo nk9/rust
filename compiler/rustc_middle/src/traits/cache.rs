@@ -20,7 +20,8 @@ impl<Key: Clone, Value: Clone> Clone for WithDepNodeCache<Key, Value> {
 
 impl<Key, Value> Default for WithDepNodeCache<Key, Value> {
     fn default() -> Self {
-        Self { hashmap: Default::default() }
+        // Query count is usually quite big, and *tends* to exceed 1024
+        Self { hashmap: Lock::new(FxHashMap::with_capacity_and_hasher(1024, Default::default())) }
     }
 }
 
